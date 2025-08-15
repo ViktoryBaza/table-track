@@ -1,0 +1,11 @@
+.zone-selector {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.zone-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}

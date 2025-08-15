@@ -1,0 +1,26 @@
+.booking-grid {
+    display: grid;
+    grid-template-columns: 100px repeat(auto-fit, 120px);
+    position: relative;
+}
+.table-header {
+    background: #ddd;
+    text-align: center;
+    font-weight: bold;
+}
+.time-cell {
+    height: 40px;
+    border-bottom: 1px solid #ccc;
+    font-size: 12px;
+}
+.table-column {
+    position: relative;
+}
+.event {
+    position: absolute;
+    width: 100px;
+    color: white;
+    font-size: 12px;
+    padding: 2px;
+    border-radius: 4px;
+}
