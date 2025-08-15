@@ -35,10 +35,19 @@ const fetchData = async () => {
 
 onMounted(fetchData)
 
-const tables = computed(() => {
+const sortedTables = computed(() => {
   if (!data.value) return []
-  return data.value.tables.filter(t => selectedZones.value.includes(t.zone))
+  return data.value.tables
+    .filter(t => selectedZones.value.includes(t.zone))
+    .slice()  
+    .sort((a, b) => {
+      if (a.zone === b.zone) {
+        return +a.number - +b.number   
+      }
+      return a.zone.localeCompare(b.zone)  
+    })
 })
+
 
 const availableDays = computed(() => data.value?.available_days || [])
 const zones = computed(() => [...new Set(data.value?.tables?.map(t => t.zone) || [])])
@@ -70,11 +79,14 @@ const getMinutesFromOpen = (timeStr) => {
 
 const EVENT_WIDTH = 80
 
-const getEventStyle = (event, colIndex) => {
+const getEventStyle = (event, tableId) => {
   const startMin = getMinutesFromOpen(event.start_time || event.seating_time)
   const endMin = getMinutesFromOpen(event.end_time)
   const top = (startMin / 30) * 40
   const height = ((endMin - startMin) / 30) * 40
+
+  const colIndex = sortedTables.value.findIndex(t => t.id === tableId)
+
   return {
     top: top + 'px',
     height: height + 'px',
@@ -83,6 +95,7 @@ const getEventStyle = (event, colIndex) => {
     background: event.status === 'Banquet' ? 'purple' : 'teal'
   }
 }
+
 
 </script>
 
@@ -96,10 +109,11 @@ const getEventStyle = (event, colIndex) => {
     </div>
 
     <BookingGrid
-      :tables="tables"
-      :timeSlots="timeSlots"
-      :getEventStyle="getEventStyle"
+    :tables="sortedTables"
+    :timeSlots="timeSlots"
+    :getEventStyle="getEventStyle"
     />
+
   </div>
 </template>
 
