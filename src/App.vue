@@ -68,18 +68,22 @@ const getMinutesFromOpen = (timeStr) => {
   return time.diff(start, 'minute')
 }
 
+const EVENT_WIDTH = 80
+
 const getEventStyle = (event, colIndex) => {
   const startMin = getMinutesFromOpen(event.start_time || event.seating_time)
   const endMin = getMinutesFromOpen(event.end_time)
   const top = (startMin / 30) * 40
   const height = ((endMin - startMin) / 30) * 40
   return {
-  top: top + 'px',
-  height: height + 'px',
-  left: (colIndex * 120) + 'px',
-  background: event.status === 'Banquet' ? 'purple' : 'teal'
+    top: top + 'px',
+    height: height + 'px',
+    left: (colIndex * EVENT_WIDTH) + 'px',
+    width: EVENT_WIDTH + 'px',
+    background: event.status === 'Banquet' ? 'purple' : 'teal'
+  }
 }
-}
+
 </script>
 
 <template>
@@ -98,32 +102,20 @@ const getEventStyle = (event, colIndex) => {
     />
   </div>
 </template>
-<style scoped>
-.booking-grid {
-  display: grid;
-  grid-template-columns: 100px repeat(auto-fit, 120px);
-  position: relative;
-}
-.table-header {
-  background: #ddd;
-  text-align: center;
-  font-weight: bold;
-}
-.time-cell {
-  height: 40px;
-  border-bottom: 1px solid #ccc;
-  font-size: 12px;
-}
-.table-column {
-  position: relative;
-}
-.event {
-  position: absolute;
-  width: 100px;
-  color: white;
-  font-size: 12px;
-  padding: 2px;
-  border-radius: 4px;
-}
 
+
+<style scoped>
+.app-wrapper {
+  background: #1e1e1e;
+  color: white;
+}
+.filters {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 10px;
+}
+.loading {
+  padding: 20px;
+  color: white;
+}
 </style>

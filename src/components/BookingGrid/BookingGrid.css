@@ -1,26 +1,96 @@
-.booking-grid {
-    display: grid;
-    grid-template-columns: 100px repeat(auto-fit, 120px);
+.booking-wrapper {
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+    background: #1e1e1e;
+    max-height: 80vh;
     position: relative;
+}
+
+.header-row {
+    display: flex;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+.corner-cell {
+    width: 100px;
+    background: #333;
+    border-bottom: 1px solid #555;
+    margin-left: 38px;
 }
 .table-header {
-    background: #ddd;
+    width: 80px;
+    height: 48px;
+    background: #333;
     text-align: center;
     font-weight: bold;
+    border-right: 1px solid #555;
+    border-bottom: 1px solid #555;
+    padding: 4px;
+    color: white;
 }
+
+.body {
+    display: flex;
+}
+
+.time-column {
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    left: 0;
+    z-index: 5;
+    background: #1e1e1e;
+}
+
 .time-cell {
     height: 40px;
-    border-bottom: 1px solid #ccc;
-    font-size: 12px;
+    width: 32px;
+    border-bottom: 1px solid #555;
+    border-right: 1px solid #555;
+    padding-right: 5px;
+    text-align: right;
+    color: white;
 }
+
+.tables-columns {
+    display: flex;
+}
+
 .table-column {
+    width: 80px;
     position: relative;
+    border-right: 1px solid #555;
 }
+
 .event {
     position: absolute;
-    width: 100px;
-    color: white;
-    font-size: 12px;
+    box-sizing: border-box;
     padding: 2px;
+    font-size: 12px;
+    color: white;
     border-radius: 4px;
+    /*  overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; */
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+    margin-top: 243px;
+}
+
+.event[style*="purple"] {
+    background: purple;
+}
+
+.event[style*="teal"] {
+    background: teal;
+}
+.table-header,
+.table-column {
+    width: 80px;
+    min-width: 80px;
+    max-width: 80px;
+    box-sizing: border-box;
 }

@@ -2,10 +2,11 @@
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
-}
-
-.zone-checkbox {
+    color: white;
+  }
+  .zone-checkbox {
     display: flex;
     align-items: center;
     gap: 5px;
-}
+  }
+  
