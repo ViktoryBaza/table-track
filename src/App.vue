@@ -126,10 +126,28 @@ const getEventStyle = (event, colIndex, table, hoveredId) => {
 
   const groupSize = currentGroup.length
   const subWidth = groupSize > 1 ? EVENT_WIDTH / groupSize : EVENT_WIDTH
-
   const left = indexInGroup * subWidth
 
   const isHovered = hoveredId === event.id
+
+  let baseColor = '#7FD7CC'
+  let borderColor = '#4AC99B'
+
+  if (event.status === 'Banquet') {
+    baseColor = '#B348F7'
+    borderColor = '#7B439E'
+  } else if (event.status === 'Живая очередь') {
+    baseColor = '#0097FD'
+    borderColor = '#007AFF'
+  } else if (
+    ['Новая', 'Заявка', 'Открыт', 'Закрыт', 'Отменен'].includes(event.status)
+  ) {
+    baseColor = '#FF7043'
+    borderColor = '#FF7043'
+  } else if (['New', 'Bill', 'Closed'].includes(event.status)) {
+    baseColor = '#7FD7CC'
+    borderColor = '#4AC99B'
+  }
 
   return {
     position: 'absolute',
@@ -137,16 +155,21 @@ const getEventStyle = (event, colIndex, table, hoveredId) => {
     height: `${height}px`,
     left: isHovered ? '0px' : `${left}px`,
     width: isHovered ? `${EVENT_WIDTH}px` : `${subWidth}px`,
-    background: event.status === 'Banquet' ? 'purple' : 'rgba(0,128,128,0.7)',
-    border: '1px solid rgba(255,255,255,0.3)',
+    background: `${baseColor}26`,           
+    borderLeft: `4px solid ${borderColor}`,   
+    borderRadius: '6px',
+    padding: '4px',
+    boxSizing: 'border-box',
+    color: 'white',
+    fontSize: '12px',
+    whiteSpace: 'normal',
+    wordBreak: 'break-word',
+    overflow: 'hidden',
     backdropFilter: 'blur(4px)',
     transition: 'all 0.2s ease',
     zIndex: isHovered ? 1000 : 1
   }
 }
-
-
-
 
 </script>
 
