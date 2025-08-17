@@ -6,21 +6,25 @@
     max-height: 80vh;
     position: relative;
 }
-
+ 
 .header-row {
     display: flex;
     position: sticky;
     top: 0;
     z-index: 10;
 }
+
 .corner-cell {
     width: 100px;
     background: #333;
     border-bottom: 1px solid #555;
     margin-left: 38px;
 }
+
 .table-header {
     width: 80px;
+    min-width: 80px;
+    max-width: 80px;
     height: 48px;
     background: #333;
     text-align: center;
@@ -29,12 +33,13 @@
     border-bottom: 1px solid #555;
     padding: 4px;
     color: white;
+    box-sizing: border-box;
 }
-
+ 
 .body {
     display: flex;
 }
-
+ 
 .time-column {
     display: flex;
     flex-direction: column;
@@ -59,9 +64,15 @@
 }
 
 .table-column {
-    width: 80px;
-    position: relative;
+    position: relative;  
+    overflow: visible;  
+    width: 80px;        
+    min-width: 80px;
+    max-width: 80px;
     border-right: 1px solid #555;
+    display: inline-block;
+    vertical-align: top;
+    box-sizing: border-box;
 }
 
 .event {
@@ -72,22 +83,25 @@
     color: white;
     border-radius: 4px;
     white-space: normal;
-    overflow: visible;
+    overflow: hidden;
     text-overflow: clip;
-    margin-top: 243px;
+    word-break: break-word;
+    transition: all 0.2s ease;
+}
+
+.table-column .event:hover {
+    left: 0 !important;
+    width: 80px !important; 
+    z-index: 9999 !important;
+    overflow: visible !important;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6) !important;
+    transition: all 0.12s ease !important;
 }
 
 .event[style*="purple"] {
-    background: purple;
+    background: purple !important;
 }
 
 .event[style*="teal"] {
-    background: teal;
-}
-.table-header,
-.table-column {
-    width: 80px;
-    min-width: 80px;
-    max-width: 80px;
-    box-sizing: border-box;
+    background: teal !important;
 }

@@ -33,7 +33,10 @@ export default {
       }
       return ''
     }
-  }
+  },
+  
+  
+  
 }
 </script>
 
@@ -53,18 +56,18 @@ export default {
         </div>
       </div>
 
-      <div class="tables-columns">
-        <div v-for="(table, colIndex) in tables" :key="'col-'+table.id" class="table-column">
-          <div
-            v-for="order in [...table.orders, ...table.reservations]"
-            :key="order.id"
-            class="event"
-            :style="getEventStyle(order, colIndex)"
-          >
-            {{ formatEventLabel(order) }}
-          </div>
-        </div>
+    <div class="tables-columns">
+    <div v-for="(table, colIndex) in tables" :key="'col-'+table.id" class="table-column">
+      <div
+        v-for="order in [...(table.orders || []), ...(table.reservations || [])]"
+        :key="order.id"
+        class="event"
+        :style="getEventStyle(order,colIndex, table)"
+      >
+        {{ formatEventLabel(order) }}
       </div>
+    </div>
+  </div>
     </div>
   </div>
 </template>

@@ -48,7 +48,6 @@ const sortedTables = computed(() => {
     })
 })
 
-
 const availableDays = computed(() => data.value?.available_days || [])
 const zones = computed(() => [...new Set(data.value?.tables?.map(t => t.zone) || [])])
 
@@ -78,23 +77,75 @@ const getMinutesFromOpen = (timeStr) => {
 }
 
 const EVENT_WIDTH = 80
+const SLOT_MIN = 30
+const SLOT_H = 40
+/* const SUB_GAP = 0 */  
 
-const getEventStyle = (event, tableId) => {
-  const startMin = getMinutesFromOpen(event.start_time || event.seating_time)
-  const endMin = getMinutesFromOpen(event.end_time)
-  const top = (startMin / 30) * 40
-  const height = ((endMin - startMin) / 30) * 40
+const getEventStyle = (event, colIndex, table, hoveredId) => {
+  const start = dayjs(event.start_time || event.seating_time)
+  const end = dayjs(event.end_time || (event.start_time || event.seating_time))
+  const startMin = getMinutesFromOpen(start)
+  const endMin = getMinutesFromOpen(end)
 
-  const colIndex = sortedTables.value.findIndex(t => t.id === tableId)
+  const top = (startMin / SLOT_MIN) * SLOT_H
+  const height = Math.max(18, ((endMin - startMin) / SLOT_MIN) * SLOT_H)
+
+  const events = [...(table.orders || []), ...(table.reservations || [])]
+    .filter(e => e && (e.start_time || e.seating_time))
+    .sort((a, b) =>
+      dayjs(a.start_time || a.seating_time).diff(dayjs(b.start_time || b.seating_time))
+    )
+
+  const groups = []
+  let curGroup = []
+  events.forEach((e, i) => {
+    const eStart = dayjs(e.start_time || e.seating_time)
+    if (i === 0) {
+      curGroup = [e]
+      groups.push(curGroup)
+      return
+    }
+    const prevStart = dayjs(events[i - 1].start_time || events[i - 1].seating_time)
+    if (Math.abs(eStart.diff(prevStart, 'minute')) <= 30) {
+      curGroup.push(e)
+    } else {
+      curGroup = [e]
+      groups.push(curGroup)
+    }
+  })
+
+  let currentGroup = []
+  let indexInGroup = 0
+  groups.forEach(g => {
+    const idx = g.findIndex(e => e.id === event.id)
+    if (idx !== -1) {
+      currentGroup = g
+      indexInGroup = idx
+    }
+  })
+
+  const groupSize = currentGroup.length
+  const subWidth = groupSize > 1 ? EVENT_WIDTH / groupSize : EVENT_WIDTH
+
+  const left = indexInGroup * subWidth
+
+  const isHovered = hoveredId === event.id
 
   return {
-    top: top + 'px',
-    height: height + 'px',
-    left: (colIndex * EVENT_WIDTH) + 'px',
-    width: EVENT_WIDTH + 'px',
-    background: event.status === 'Banquet' ? 'purple' : 'teal'
+    position: 'absolute',
+    top: `${top}px`,
+    height: `${height}px`,
+    left: isHovered ? '0px' : `${left}px`,
+    width: isHovered ? `${EVENT_WIDTH}px` : `${subWidth}px`,
+    background: event.status === 'Banquet' ? 'purple' : 'rgba(0,128,128,0.7)',
+    border: '1px solid rgba(255,255,255,0.3)',
+    backdropFilter: 'blur(4px)',
+    transition: 'all 0.2s ease',
+    zIndex: isHovered ? 1000 : 1
   }
 }
+
+
 
 
 </script>
