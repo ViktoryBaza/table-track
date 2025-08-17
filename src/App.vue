@@ -79,7 +79,7 @@ const getMinutesFromOpen = (timeStr) => {
 const EVENT_WIDTH = 80
 const SLOT_MIN = 30
 const SLOT_H = 40
-/* const SUB_GAP = 0 */  
+const OVERLAP_GAP = 4
 
 const getEventStyle = (event, colIndex, table, hoveredId) => {
   const start = dayjs(event.start_time || event.seating_time)
@@ -113,20 +113,44 @@ const getEventStyle = (event, colIndex, table, hoveredId) => {
       groups.push(curGroup)
     }
   })
-
+  let inThirtyMinGroup = false
   let currentGroup = []
   let indexInGroup = 0
   groups.forEach(g => {
     const idx = g.findIndex(e => e.id === event.id)
     if (idx !== -1) {
+      inThirtyMinGroup = g.length > 1
       currentGroup = g
       indexInGroup = idx
     }
   })
 
-  const groupSize = currentGroup.length
-  const subWidth = groupSize > 1 ? EVENT_WIDTH / groupSize : EVENT_WIDTH
-  const left = indexInGroup * subWidth
+  let left = 0
+  let width = EVENT_WIDTH
+
+  if (inThirtyMinGroup) {
+    const groupSize = currentGroup.length
+    width = groupSize > 1 ? EVENT_WIDTH / groupSize : EVENT_WIDTH
+    left = indexInGroup * width
+  } else {
+    const nonThirtyMinEvents = events.filter(e => {
+      return !groups.some(g => g.includes(e) && g.length > 1)
+    })
+
+    left = 0
+    for (let i = 0; i < nonThirtyMinEvents.length; i++) {
+      const e = nonThirtyMinEvents[i]
+      if (e.id === event.id) break
+
+      const eStart = dayjs(e.start_time || e.seating_time)
+      const eEnd = dayjs(e.end_time || (e.start_time || e.seating_time))
+      if (start.isBefore(eEnd) && end.isAfter(eStart)) {
+        left += OVERLAP_GAP
+      }
+    }
+
+    width = Math.max(0, EVENT_WIDTH - left)
+  }
 
   const isHovered = hoveredId === event.id
 
@@ -154,22 +178,22 @@ const getEventStyle = (event, colIndex, table, hoveredId) => {
     top: `${top}px`,
     height: `${height}px`,
     left: isHovered ? '0px' : `${left}px`,
-    width: isHovered ? `${EVENT_WIDTH}px` : `${subWidth}px`,
-    background: `${baseColor}26`,           
-    borderLeft: `4px solid ${borderColor}`,   
+    width: isHovered ? `${EVENT_WIDTH}px` : `${width}px`,
+    background: `${baseColor}26`,
+    borderLeft: `4px solid ${borderColor}`,
     borderRadius: '6px',
     padding: '4px',
     boxSizing: 'border-box',
     color: 'white',
     fontSize: '12px',
-    whiteSpace: 'normal',
-    wordBreak: 'break-word',
+    wordBreak: inThirtyMinGroup && !isHovered ? 'normal' : 'break-word', 
     overflow: 'hidden',
     backdropFilter: 'blur(4px)',
     transition: 'all 0.2s ease',
     zIndex: isHovered ? 1000 : 1
   }
 }
+
 
 </script>
 
