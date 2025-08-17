@@ -172,26 +172,27 @@ const getEventStyle = (event, colIndex, table, hoveredId) => {
     baseColor = '#7FD7CC'
     borderColor = '#4AC99B'
   }
-
-  return {
+    return {
     position: 'absolute',
     top: `${top}px`,
-    height: `${height}px`,
+    height: `${height}px`,     
+    minHeight: `${height}px`,    
     left: isHovered ? '0px' : `${left}px`,
     width: isHovered ? `${EVENT_WIDTH}px` : `${width}px`,
     background: `${baseColor}26`,
     borderLeft: `4px solid ${borderColor}`,
     borderRadius: '6px',
-    padding: '4px',
+    paddingLeft: '6px',
     boxSizing: 'border-box',
-    color: 'white',
-    fontSize: '12px',
-    wordBreak: inThirtyMinGroup && !isHovered ? 'normal' : 'break-word', 
+    color: status === 'status-await' ? '#0097fd' : 'white',
+    fontSize: '14px',
+    wordBreak: inThirtyMinGroup && !isHovered ? 'normal' : 'break-word',
     overflow: 'hidden',
     backdropFilter: 'blur(4px)',
     transition: 'all 0.2s ease',
     zIndex: isHovered ? 1000 : 1
   }
+
 }
 
 

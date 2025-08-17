@@ -43,35 +43,46 @@ export default {
   },
 
   formatEventLabel(event) {
-    const type = event.name_for_reservation ? 'reservation' : 'order'
-    const status = this.translateStatus(event.status, type)
+  const type = event.name_for_reservation ? 'reservation' : 'order';
+  const status = this.translateStatus(event.status, type);
 
-    if (event.status === 'Banquet') {
-      return `Банкет<br>${this.formatTime(event.start_time)}–${this.formatTime(event.end_time)}`
-    }
+  const rawPhone = event.phone_number || '';
+  const phoneNumber = rawPhone.startsWith('+') ? rawPhone.slice(1) : rawPhone;
+  const phoneIcon = `<img src="/src/assets/icons/phone.svg" class="phone-icon" alt="телефон" />`;
 
-    if (event.status === 'Живая очередь') {
-      return `№${event.id}<br>
-             ${event.name_for_reservation}; ${event.num_people}чел<br>
-              Живая очередь<br>
-              ${event.phone_number}<br>
-              ${this.formatTime(event.seating_time)}`
-    }
+  let statusClass = '';
+  if (status === 'Ожидает подтверждения') statusClass = 'status-await-confirm';
+  else if (status === 'Ожидаем') statusClass = 'status-await';
+  else if (status === 'В зале') statusClass = 'status-in-hall';
+  else if (status === 'Отменен') statusClass = 'status-cancel';
+  else if (status === 'Пречек') statusClass = 'status-precheck';
+  else if (status === 'Закрытый' || status === 'Новый') statusClass = 'status-closed-new';
+  else if (status === 'Живая очередь') statusClass = 'status-queue';
 
-    if (event.start_time && !event.name_for_reservation) {
-      return `Заказ <br> ${status}<br>${this.formatTime(event.start_time)}–${this.formatTime(event.end_time)}`
-    }
+  if (event.name_for_reservation) {
+  return `<span class="order-id">№${event.id}</span> <br>
+          ${event.name_for_reservation}; ${event.num_people}чел<br>
+          <span class="${statusClass}">${status}</span><br>
+          <span class="phone-wrapper">${phoneIcon} ${phoneNumber}</span>
+          ${this.formatTime(event.seating_time)}${event.end_time ? '–' + this.formatTime(event.end_time) : ''}`;
+}
 
-    if (event.name_for_reservation) {
-      return `№${event.id} <br>
-              ${event.name_for_reservation}; ${event.num_people}чел<br>
-              ${status}<br>
-              ${event.phone_number}<br>
-              ${this.formatTime(event.seating_time)}`
-    }
-
-    return ''
+if (event.start_time && !event.name_for_reservation) {
+  if (status === 'Банкет') {
+    return `<span class="${statusClass}">${status}</span><br>
+            ${this.formatTime(event.start_time)}–${this.formatTime(event.end_time)}`;
   }
+
+  return `<span>Заказ</span> 
+          <span class="${statusClass}"><br>${status}</span><br>
+          ${this.formatTime(event.start_time)}–${this.formatTime(event.end_time)}`;
+}
+
+
+
+  return '';
+}
+
 }
 
 }

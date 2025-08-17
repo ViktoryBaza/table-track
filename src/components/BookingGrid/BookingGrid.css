@@ -6,7 +6,7 @@
     max-height: 80vh;
     position: relative;
 }
- 
+
 .header-row {
     display: flex;
     position: sticky;
@@ -35,11 +35,11 @@
     color: white;
     box-sizing: border-box;
 }
- 
+
 .body {
     display: flex;
 }
- 
+
 .time-column {
     display: flex;
     flex-direction: column;
@@ -64,9 +64,9 @@
 }
 
 .table-column {
-    position: relative;  
-    overflow: visible;  
-    width: 80px;        
+    position: relative;
+    overflow: visible;
+    width: 80px;
     min-width: 80px;
     max-width: 80px;
     border-right: 1px solid #555;
@@ -78,8 +78,7 @@
 .event {
     position: absolute;
     box-sizing: border-box;
-    padding: 2px;
-    font-size: 12px;
+    font-size: 14px;
     color: white;
     border-radius: 4px;
     white-space: normal;
@@ -91,7 +90,7 @@
 
 .table-column .event:hover {
     left: 0 !important;
-    width: 80px !important; 
+    width: 80px !important;
     z-index: 9999 !important;
     overflow: visible !important;
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6) !important;
@@ -104,4 +103,77 @@
 
 .event[style*="teal"] {
     background: teal !important;
+}
+.event-type {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.status-await-confirm {
+    background: #007aff;
+    color: white;
+}
+.status-await {
+    background: #0097fd26;
+    color: #0097fd;
+}
+.status-in-hall {
+    background: #4ac99b26;
+    color: white;
+}
+.status-cancel {
+    background: #ff704326;
+    color: white;
+}
+.status-precheck {
+    background: #4ac99b26;
+    color: white;
+}
+.status-closed-new {
+    background: #ffffff26;
+    color: white;
+}
+.status-queue {
+    background: #0097fd26;
+    color: white;
+}
+ 
+.event {
+    font-size: 14px;
+    color: white; 
+}
+.order-id {
+    font-size: 8px;
+}
+
+.event .status-await-confirm,
+.event .status-await,
+.event .status-in-hall,
+.event .status-cancel,
+.event .status-precheck,
+.event .status-closed-new,
+.event .status-queue {
+    font-size: 8px;
+    border-radius: 4px;
+    padding: 2px;
+}
+.table-column .event:hover {
+    left: 0 !important;
+    width: 80px !important;
+    z-index: 9999 !important;
+    overflow: visible !important;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6) !important;
+    transition: all 0.12s ease !important;
+    height: auto !important;
+    white-space: normal !important;
+}
+.phone-wrapper {
+    display: inline-block;  
+    word-break: break-all; 
+    vertical-align: middle;  
+}
+
+.phone-icon {
+    width: 8px;
+    height: 8px;
 }
