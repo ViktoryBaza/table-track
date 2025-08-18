@@ -37,16 +37,32 @@ onMounted(fetchData)
 
 const sortedTables = computed(() => {
   if (!data.value) return []
+
   return data.value.tables
+    .map(table => {
+      const filteredOrders = (table.orders || []).filter(o =>
+        dayjs(o.start_time || o.seating_time).format('YYYY-MM-DD') === selectedDay.value
+      )
+      const filteredReservations = (table.reservations || []).filter(r =>
+        dayjs(r.start_time || r.seating_time).format('YYYY-MM-DD') === selectedDay.value
+      )
+
+      return {
+        ...table,
+        orders: filteredOrders,
+        reservations: filteredReservations
+      }
+    })
+    .filter(t => t.orders.length > 0 || t.reservations.length > 0)
     .filter(t => selectedZones.value.includes(t.zone))
-    .slice()  
     .sort((a, b) => {
       if (a.zone === b.zone) {
-        return +a.number - +b.number   
+        return +a.number - +b.number
       }
-      return a.zone.localeCompare(b.zone)  
+      return a.zone.localeCompare(b.zone)
     })
 })
+
 
 const availableDays = computed(() => data.value?.available_days || [])
 const zones = computed(() => [...new Set(data.value?.tables?.map(t => t.zone) || [])])
@@ -202,6 +218,7 @@ const getEventStyle = (event, colIndex, table, hoveredId) => {
   <div v-if="loading" class="loading">Загрузка...</div>
 
   <div v-else>
+    <h1>Бронирования</h1>
     <div class="filters">
       <DateSelector v-model="selectedDay" :days="availableDays" />
       <ZoneSelector v-model="selectedZones" :zones="zones" />
@@ -215,20 +232,3 @@ const getEventStyle = (event, colIndex, table, hoveredId) => {
 
   </div>
 </template>
-
-
-<style scoped>
-.app-wrapper {
-  background: #1e1e1e;
-  color: white;
-}
-.filters {
-  display: flex;
-  gap: 20px;
-  margin-bottom: 10px;
-}
-.loading {
-  padding: 20px;
-  color: white;
-}
-</style>

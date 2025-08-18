@@ -1,12 +1,33 @@
 .zone-selector {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    color: white;
-  }
-  .zone-checkbox {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  color: white;
+}
+
+.zone-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.zone-button {
+  font-family: "Inter", sans-serif;
+  background: #333;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 4px 6px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 400;
+  transition: background 0.2s;
+}
+
+.zone-button.active {
+  background: #007bff; 
+}
+
+.zone-button:hover {
+  background: #555;
+}

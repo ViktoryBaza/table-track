@@ -82,20 +82,30 @@ if (event.start_time && !event.name_for_reservation) {
 
   return '';
 }
-
 }
-
 }
 </script>
 
 <template>
   <div class="booking-wrapper">
-    <div class="header-row">
+      <div class="header-row">
       <div class="corner-cell"></div>
-      <div v-for="table in tables" :key="table.id" class="table-header">
-        {{ table.number }} <small>({{ table.zone }})</small>
+      <div 
+        v-for="table in tables" 
+        :key="table.id" 
+        class="table-header"
+      >
+      <div class="table-group">
+        <div class="table-number">
+        #<span class="table-number-digit">{{ table.number }}</span>
       </div>
-    </div>
+
+        <div class="table-capacity">{{ table.capacity }} чел</div>
+      </div>
+        <div class="table-zone">{{ table.zone }}</div>
+      </div>
+  </div>
+
 
     <div class="body">
       <div class="time-column">
