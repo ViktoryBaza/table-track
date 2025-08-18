@@ -3,6 +3,8 @@ import './BookingGrid.css'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
+import phoneSvg from '/src/assets/icons/phone.svg';
+
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
@@ -48,7 +50,7 @@ export default {
 
   const rawPhone = event.phone_number || '';
   const phoneNumber = rawPhone.startsWith('+') ? rawPhone.slice(1) : rawPhone;
-  const phoneIcon = `<img src="/src/assets/icons/phone.svg" class="phone-icon" alt="телефон" />`;
+  const phoneIcon = `<img src="${phoneSvg}" class="phone-icon" alt="телефон" />`;
 
   let statusClass = '';
   if (status === 'Ожидает подтверждения') statusClass = 'status-await-confirm';
